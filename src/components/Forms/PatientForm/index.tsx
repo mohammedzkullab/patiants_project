@@ -7,12 +7,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
-// import { createUser } from "@/lib/actions/patient.actions";
 import { UserFormValidation } from "@/lib/validation";
 
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../../CustomFormField";
 import SubmitButton from "../../SubmitButton";
+import { createUser } from "@/lib/actions/patient.actions";
 
 export const PatientForm = () => {
   const router = useRouter();
@@ -30,21 +30,21 @@ export const PatientForm = () => {
   const onSubmit = async (values: z.infer<typeof UserFormValidation>) => {
     setIsLoading(true);
 
-    // try {
-    //   const user = {
-    //     name: values.name,
-    //     email: values.email,
-    //     phone: values.phone,
-    //   };
+    try {
+      const user = {
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+      };
 
-    //   const newUser = undefined; //await createUser(user);
+      const newUser = await createUser(user);
 
-    //   if (newUser) {
-    //     router.push(`/patients/${newUser.$id}/register`);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+      if (newUser) {
+        router.push(`/patients/${newUser.$id}/register`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
     setIsLoading(false);
   };
