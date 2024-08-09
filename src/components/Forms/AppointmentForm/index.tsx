@@ -11,7 +11,7 @@ import { SelectItem } from "@/components/ui/select";
 import { Doctors } from "@/constants";
 import {
   createAppointment,
-  //   updateAppointment,
+  updateAppointment,
 } from "@/lib/actions/appointment.actions";
 import { getAppointmentSchema } from "@/lib/validation";
 import { Appointment } from "@/types/appwrite.types";
@@ -69,7 +69,6 @@ export const AppointmentForm = ({
       default:
         status = "pending";
     }
-    console.log(status, type, patientId);
     try {
       if (type === "create" && patientId) {
         const appointment = {
@@ -81,7 +80,6 @@ export const AppointmentForm = ({
           status: status as Status,
           note: values.note,
         };
-        console.log("🚀 ~ appointment:", appointment);
 
         const newAppointment = await createAppointment(appointment);
 
@@ -104,12 +102,12 @@ export const AppointmentForm = ({
           type,
         };
 
-        // const updatedAppointment = await updateAppointment(appointmentToUpdate);
+        const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
-        // if (updatedAppointment) {
-        //   setOpen && setOpen(false);
-        //   form.reset();
-        // }
+        if (updatedAppointment) {
+          setOpen && setOpen(false);
+          form.reset();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -126,7 +124,7 @@ export const AppointmentForm = ({
       buttonLabel = "Schedule Appointment";
       break;
     default:
-      buttonLabel = "Submit Apppointment";
+      buttonLabel = "Submit Appointment";
   }
 
   return (
